@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mt-5">
+    <div class="col-md-6 offset-md-3 text-center">
+        <div class="card shadow-sm border-danger">
+            <div class="card-body p-5">
+                <h3 class="text-danger mb-4">Delete Hackathon?</h3>
+                <p>Are you sure you want to delete <strong>"{{ hackathon.title }}"</strong>?</p>
+                <p class="text-muted small mb-4">This action cannot be undone. All teams and submissions tied to this hackathon will also be removed.</p>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-dark me-2">Cancel</a>
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

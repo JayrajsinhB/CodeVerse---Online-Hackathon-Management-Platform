@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mt-4 mb-4">
+    <div class="col-12 text-center">
+        <h2>Organizer Dashboard</h2>
+        <p>Welcome, 
+            {% if request.user.organizer_profile.first_name %}
+                {{ request.user.organizer_profile.first_name }} {{ request.user.organizer_profile.last_name }}
+            {% else %}
+                {{ request.user.email }}
+            {% endif %}!
+        </p>
+        <div class="mb-3">
+            <a href="{% url 'view_profile' request.user.id %}" class="btn btn-outline-primary btn-sm me-2">View Profile</a>
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary btn-sm">Edit Profile</a>
+        </div>
+        <a href="{% url 'create_hackathon' %}" class="btn btn-primary m-2">Create New Hackathon</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <h4 class="mb-3 border-bottom pb-2">My Hackathons</h4>
+        
+        {% if hackathons %}
+            <div class="list-group">
+                {% for hack in hackathons %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                        
+                        <div>
+                            <h5 class="mb-1 fw-bold">
+                                {{ hack.title }}
+                                <span class="badge bg-info text-dark ms-2 fs-6">{{ hack.get_status_display }}</span>
+                            </h5>
+                            <small class="text-muted">
+                                Starts: {{ hack.start_date|date:"M d, Y H:i" }} | 
+                                Ends: {{ hack.end_date|date:"M d, Y H:i" }}
+                            </small>
+                        </div>
+                        
+                        <div>
+                            <a href="{% url 'edit_hackathon' hack.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a href="{% url 'delete_hackathon' hack.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                            <a href="{% url 'manage_teams' hack.id %}" class="btn btn-sm btn-dark">Manage Teams</a>
+                            <!-- <a href="{% url 'manage_teams' hack.id %}" class="btn btn-sm btn-outline-secondary">Manage Teams</a> -->
+                            <a href="{% url 'leaderboard' hack.id %}" class="btn btn-sm btn-warning fw-bold">Leaderboard</a>
+                        </div>
+                        
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center p-5 bg-light rounded text-muted">
+                <h5>No hackathons created yet.</h5>
+                <p>Click the blue button above to get started!</p>
+            </div>
+        {% endif %}
+        
+    </div>
+</div>
+{% endblock %}

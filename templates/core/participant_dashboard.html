@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mt-4 mb-4">
+    <div class="col-12 text-center">
+        <h2>Participant Dashboard</h2>
+        <p>Welcome, 
+            {% if request.user.participant_profile.first_name %}
+                {{ request.user.participant_profile.first_name }} {{ request.user.participant_profile.last_name }}
+            {% else %}
+                {{ request.user.email }}
+            {% endif %}!
+        </p>
+        <div class="mb-3">
+            <a href="{% url 'view_profile' request.user.id %}" class="btn btn-outline-primary btn-sm me-2">View Profile</a>
+            <a href="{% url 'edit_profile' %}" class="btn btn-primary btn-sm">Edit Profile</a>
+        </div>
+        <a href="{% url 'hackathons' %}" class="btn btn-success m-2">Find Hackathons</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <h4 class="mb-3 border-bottom pb-2">My Teams & Submissions</h4>
+        
+        {% if memberships %}
+            <div class="list-group">
+                {% for membership in memberships %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                        <div>
+                            <h5 class="mb-1 fw-bold">{{ membership.team.name }}</h5>
+                            <small class="text-muted">Hackathon: {{ membership.team.hackathon.title }}</small>
+                        </div>
+                        
+                        <div>
+                            <a href="{% url 'leaderboard' membership.team.hackathon.id %}" class="btn btn-sm btn-warning fw-bold me-2">Leaderboard</a>
+    
+                            {% if membership.team.submission %}
+                                <span class="badge bg-success me-2">Submitted</span>
+                                <a href="{% url 'submit_project' membership.team.id %}" class="btn btn-sm btn-outline-primary">Edit Submission</a>
+                            {% else %}
+                                <a href="{% url 'submit_project' membership.team.id %}" class="btn btn-sm btn-dark">Submit Project</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center p-5 bg-light rounded text-muted">
+                <h5>You aren't in any teams yet.</h5>
+                <p>Click "Find Hackathons" above to join one!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

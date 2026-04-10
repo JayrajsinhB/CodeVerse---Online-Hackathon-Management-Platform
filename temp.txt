@@ -1,0 +1,42 @@
+Manage teams in organizer dashboard, edit delete manage teams and dashboard, approve teams, verify participants and teams
+price currency selector dropdown menu or something
+hackathons should get automatically expired if the date is gone, participants should not be able to participate if last Registration date is gone. for that impement last registration date. final submission date.
+can add filters and sortings into different things such as hackathons teams members etc
+Event Status Management (Draft, Open, Judging, Completed)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Here are the most logical next steps, categorized by importance:
+
+1. The Final MVP Piece (Highly Recommended)
+The Leaderboard / Public Results: The judges are scoring projects, but right now, those scores just sit on the Judge's dashboard. You need a view where Participants and Organizers can actually see the final standings and find out who won the prize money!
+
+2. Polishing the Core Experience (Good to Have)
+Event Status Management: Right now, your hackathons are probably just "open" forever. Organizers need a way to change the status of an event (e.g., Draft → Registration Open → Hacking Active → Judging → Completed).
+
+User Profiles: Allowing users to add their actual names, GitHub usernames, LinkedIn profiles, and maybe a profile picture, rather than just seeing participant@gmail.com everywhere.
+
+Specific Judge Assignment: Right now, it looks like any logged-in Judge sees all submissions across the whole platform. You probably want a way for Organizers to invite specific judges to their specific hackathons.
+
+3. "Version 2.0" Features (Advanced)
+Announcements System: An Organizer panel where they can blast out a message (like "Pizza is here!" or "1 hour remaining!") that appears on the Participant dashboards.
+
+Search and Filter: Adding a search bar and category tags to the "Find Hackathons" page so users can filter by "Upcoming", "Active", or "Past".

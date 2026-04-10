@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12 mb-3">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-dark btn-sm">&larr; Back to Dashboard</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body p-4">
+                <span class="badge bg-primary mb-2">{{ submission.hackathon.title }}</span>
+                <h2 class="fw-bold">{{ submission.project_title }}</h2>
+                <p class="text-muted">Submitted by Team: <strong>{{ submission.team.name }}</strong></p>
+                <hr>
+                
+                <h5 class="fw-bold mt-4">Project Description</h5>
+                <p style="white-space: pre-wrap;">{{ submission.description }}</p>
+                
+                <h5 class="fw-bold mt-4">Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <strong>GitHub Repo:</strong> <br>
+                        <a href="{{ submission.repo_link }}" target="_blank" class="text-decoration-none">{{ submission.repo_link }}</a>
+                    </li>
+                    {% if submission.demo_video %}
+                    <li>
+                        <strong>Demo Video:</strong> <br>
+                        <a href="{{ submission.demo_video }}" target="_blank" class="text-decoration-none">{{ submission.demo_video }}</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0 bg-light h-100">
+            <div class="card-body p-4 text-center">
+                <h4 class="fw-bold mb-4">Assign Score</h4>
+                
+                {% if submission.score > 0 %}
+                    <div class="alert alert-success mb-4">
+                        <strong>Current Score: {{ submission.score }} / 100</strong>
+                    </div>
+                {% endif %}
+
+                <form method="POST" class="text-start">
+                    {% csrf_token %}
+                    <label class="fw-bold mb-2">Score (0-100)</label>
+                    {{ form.score }}
+                    <small class="text-muted d-block mt-1 mb-4">Evaluate based on creativity, technical complexity, and polish.</small>
+                    
+                    <button type="submit" class="btn btn-success w-100 btn-lg">Submit Score</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

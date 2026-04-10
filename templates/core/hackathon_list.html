@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mt-4 mb-3">
+    <div class="col-12 text-center">
+        <h2 class="display-6 fw-bold">Upcoming Hackathons</h2>
+        <p class="text-muted">Find a hackathon, build a team, and start coding.</p>
+    </div>
+</div>
+
+<div class="row">
+    {% for hack in hackathons %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <span class="badge bg-primary mb-2">Prize: {{ hack.prize_money }}</span>
+                <h5 class="card-title fw-bold">{{ hack.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Hosted by {{ hack.host_name }}</h6>
+                <p class="card-text text-truncate">{{ hack.description }}</p>
+                
+                <hr>
+                
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <small class="text-muted"><strong>Starts:</strong> <br>{{ hack.start_date|date:"M d, Y" }}</small>
+                    <small class="text-muted text-end"><strong>Ends:</strong> <br>{{ hack.end_date|date:"M d, Y" }}</small>
+                </div>
+                
+                <a href="{% url 'hackathon_detail' hack.id %}" class="btn btn-outline-dark w-100">View Details & Join</a>
+            </div>
+        </div>
+    </div>
+    
+    {% empty %}
+    <div class="col-12 text-center mt-5">
+        <h4 class="text-muted">No hackathons available right now. Check back later!</h4>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

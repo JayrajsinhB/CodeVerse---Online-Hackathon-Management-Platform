@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mt-5">
+    <div class="col-md-8 offset-md-2 text-center mb-4">
+        <h1 class="fw-bold text-primary">Leaderboard</h1>
+        <h4 class="text-muted">{{ hackathon.title }}</h4>
+        <a href="{% url 'hackathon_detail' hackathon.id %}" class="btn btn-sm btn-outline-dark mt-3">&larr; Back to Hackathon</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        {% if submissions %}
+            <div class="list-group shadow-sm">
+                {% for sub in submissions %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center p-4 {% if forloop.counter == 1 %}bg-light border-warning border-3{% endif %}">
+                        <div class="d-flex align-items-center">
+                            <h2 class="me-4 fw-bold {% if forloop.counter == 1 %}text-warning{% elif forloop.counter == 2 %}text-secondary{% elif forloop.counter == 3 %}text-danger{% else %}text-muted{% endif %}">
+                                #{{ forloop.counter }}
+                            </h2>
+                            
+                            <div>
+                                <h4 class="mb-1 fw-bold">{{ sub.project_title }}</h4>
+                                <p class="mb-0 text-muted">Team: <strong>{{ sub.team.name }}</strong></p>
+                            </div>
+                        </div>
+                        
+                        <div class="text-end">
+                            <span class="fs-4 fw-bold">{{ sub.score }}</span>
+                            <span class="text-muted small d-block">Points</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="card border-0 shadow-sm text-center p-5 bg-light">
+                <h4 class="text-muted">No scores available yet.</h4>
+                <p>The judges are still reviewing the submissions!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

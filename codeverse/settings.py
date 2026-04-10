@@ -122,4 +122,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+import os
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 AUTH_USER_MODEL = 'core.User'
+
+# Email Configuration (Development Mode)
+# This prints emails to your terminal instead of actually sending them.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'CodeVerse Team <hello@codeverse.com>'

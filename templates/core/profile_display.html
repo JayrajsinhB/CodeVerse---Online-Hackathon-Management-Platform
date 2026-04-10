@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile.first_name|default:target_user.email }}'s Profile | CodeVerse{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 rounded overflow-hidden">
+            <!-- Profile Header -->
+            <div class="bg-primary text-white p-4 text-center">
+                {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="rounded-circle mb-3 border border-3 border-white shadow-sm" style="width: 120px; height: 120px; object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle bg-light text-primary d-inline-flex align-items-center justify-content-center mb-3 border border-3 border-white shadow-sm" style="width: 120px; height: 120px; font-size: 3rem; font-weight: bold;">
+                        {{ target_user.email|make_list|first|upper }}
+                    </div>
+                {% endif %}
+                <h3 class="mb-1">
+                    {% if profile.first_name or profile.last_name %}
+                        {{ profile.first_name }} {{ profile.last_name }}
+                    {% else %}
+                        {{ target_user.email }}
+                    {% endif %}
+                </h3>
+                <p class="mb-2 opacity-75">
+                    <span class="badge bg-light text-primary text-uppercase">{{ target_user.get_role_display }}</span>
+                </p>
+                
+                {% if request.user == target_user %}
+                    <a href="{% url 'edit_profile' %}" class="btn btn-outline-light btn-sm mt-2 rounded-pill px-4">Edit Profile</a>
+                {% endif %}
+            </div>
+
+            <!-- Profile Details -->
+            <div class="card-body p-4">
+                <div class="row g-4">
+                    <!-- Common info that everyone has -->
+                    <div class="col-sm-6">
+                        <h6 class="text-muted mb-1">Email</h6>
+                        <p class="fw-medium">{{ target_user.email }}</p>
+                    </div>
+                    {% if profile.mobile_number %}
+                    <div class="col-sm-6">
+                        <h6 class="text-muted mb-1">Mobile Number</h6>
+                        <p class="fw-medium">{{ profile.mobile_number }}</p>
+                    </div>
+                    {% endif %}
+
+                    <div class="col-12"><hr class="my-2"></div>
+
+                    <!-- Role Specific Info -->
+                    {% if target_user.role == 'participant' %}
+                        <div class="col-sm-6">
+                            <h6 class="text-muted mb-1">University / College</h6>
+                            <p class="fw-medium">{{ profile.university|default:"Not specified" }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <h6 class="text-muted mb-1">Degree & Graduation Year</h6>
+                            <p class="fw-medium">
+                                {{ profile.degree|default:"Degree not specified" }}
+                                {% if profile.graduation_year %}({{ profile.graduation_year }}){% endif %}
+                            </p>
+                        </div>
+                        <div class="col-12">
+                            <h6 class="text-muted mb-1">Skills</h6>
+                            <p class="fw-medium">{{ profile.skills|default:"No skills added yet" }}</p>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex gap-2 flex-wrap">
+                                {% if profile.github_url %}
+                                    <a href="{{ profile.github_url }}" target="_blank" class="btn btn-sm btn-dark"><i class="bi bi-github"></i> GitHub</a>
+                                {% endif %}
+                                {% if profile.linkedin_url %}
+                                    <a href="{{ profile.linkedin_url }}" target="_blank" class="btn btn-sm btn-primary"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                                {% endif %}
+                                {% if profile.resume %}
+                                    <a href="{{ profile.resume.url }}" target="_blank" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-pdf"></i> View Resume</a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    {% elif target_user.role == 'organizer' %}
+                        <div class="col-sm-6">
+                            <h6 class="text-muted mb-1">Organization</h6>
+                            <p class="fw-medium">{{ profile.organization_name|default:"Not specified" }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <h6 class="text-muted mb-1">Designation</h6>
+                            <p class="fw-medium">{{ profile.designation|default:"Not specified" }}</p>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex gap-2 flex-wrap mt-2">
+                                {% if profile.organization_website %}
+                                    <a href="{{ profile.organization_website }}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-globe"></i> Website</a>
+                                {% endif %}
+                                {% if profile.linkedin_url %}
+                                    <a href="{{ profile.linkedin_url }}" target="_blank" class="btn btn-sm btn-primary"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    {% elif target_user.role == 'judge' %}
+                        <div class="col-sm-6">
+                            <h6 class="text-muted mb-1">Company</h6>
+                            <p class="fw-medium">{{ profile.company_name|default:"Not specified" }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <h6 class="text-muted mb-1">Job Title</h6>
+                            <p class="fw-medium">{{ profile.job_title|default:"Not specified" }}</p>
+                        </div>
+                        <div class="col-12">
+                            <h6 class="text-muted mb-1">Expertise / Bio</h6>
+                            <p class="fw-medium">{{ profile.expertise|default:"No bio provided" }}</p>
+                        </div>
+                        <div class="col-12">
+                            {% if profile.linkedin_url %}
+                                <a href="{{ profile.linkedin_url }}" target="_blank" class="btn btn-sm btn-primary mt-2"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mt-4">
+    
+    <div class="col-md-7 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body p-4">
+                <span class="badge bg-primary fs-6 mb-3">Prize: {{ hackathon.prize_money }}</span>
+                <h1 class="fw-bold">{{ hackathon.title }}</h1>
+                <p class="text-muted">Hosted by {{ hackathon.host_name }}</p>
+                <hr>
+                <h5>Description</h5>
+                <p style="white-space: pre-wrap;">{{ hackathon.description }}</p>
+                <a href="{% url 'leaderboard' hackathon.id %}" class="btn btn-warning fw-bold mt-3">🏆 View Leaderboard</a>
+                <hr>
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <small class="text-muted fw-bold">STARTS</small><br>
+                        <span>{{ hackathon.start_date|date:"M d, Y H:i" }}</span>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted fw-bold">ENDS</small><br>
+                        <span>{{ hackathon.end_date|date:"M d, Y H:i" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5 mb-4">
+        <div class="card shadow-sm border-0 bg-light h-100">
+            <div class="card-body p-4 text-center">
+                
+                {% if request.user.role == 'organizer' %}
+                    <h3 class="fw-bold">Organizer Panel</h3>
+                    <p class="text-muted">You are managing this event.</p>
+                    <button class="btn btn-primary w-100 mt-3">View All Teams</button>
+
+                {% elif user_team %}
+                    <h3 class="fw-bold text-success">You are in a Team!</h3>
+                    <hr>
+                    <h4 class="mb-1">{{ user_team.name }}</h4>
+                    <p class="small text-muted mb-4">Leader: {{ user_team.leader.email }}</p>
+                    
+                    <div class="bg-white border rounded p-3 mb-3">
+                        <small class="fw-bold d-block text-muted">INVITE CODE</small>
+                        <span class="fs-3 fw-bold font-monospace text-primary">{{ user_team.access_code }}</span>
+                    </div>
+                    <p class="small text-muted">Share this code with your friends so they can join!</p>
+                    
+                {% else %}
+                    <h3 class="fw-bold">Join the Hackathon</h3>
+                    <p class="text-muted mb-4">You must be in a team to participate.</p>
+                    
+                    <form method="post" class="text-start border-bottom pb-4 mb-4">
+                        {% csrf_token %}
+                        <label class="fw-bold mb-2">Create a New Team</label>
+                        <input type="text" name="team_name" class="form-control mb-3" placeholder="Enter team name" required>
+                        <button type="submit" name="create_team" class="btn btn-dark w-100">Create Team</button>
+                    </form>
+
+                    <div class="text-start">
+                        <label class="fw-bold mb-2">Have an invite code?</label>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="text" name="invite_code" class="form-control mb-3" placeholder="e.g., A1B2C3" required>
+                            <button type="submit" name="join_team" class="btn btn-outline-dark w-100">Join Existing Team</button>
+                        </form>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

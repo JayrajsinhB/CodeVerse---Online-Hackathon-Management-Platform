@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+            <h2>Manage Teams: <span class="text-primary">{{ hackathon.title }}</span></h2>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-dark">Back to Dashboard</a>
+        </div>
+        
+        {% if teams %}
+            <div class="row">
+                {% for team in teams %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card shadow-sm h-100 border-0 bg-light">
+                            <div class="card-header bg-dark text-white fw-bold d-flex justify-content-between">
+                                <span>{{ team.name }}</span>
+                                <span class="badge bg-secondary">{{ team.members.count }} Members</span>
+                            </div>
+                            <div class="card-body p-3">
+                                <p class="small text-muted mb-3">Invite Code: <span class="fw-bold text-primary font-monospace">{{ team.access_code }}</span></p>
+                                
+                                <h6 class="fw-bold border-bottom pb-1 mb-2">Roster</h6>
+                                <ul class="list-unstyled mb-0">
+                                    {% for member in team.members.all %}
+                                        <li class="mb-1 py-1">
+                                            {% if member == team.leader %}
+                                                <span class="badge bg-warning text-dark me-1">Leader</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary me-1">Member</span>
+                                            {% endif %}
+                                            {{ member.email }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center p-5 bg-light rounded text-muted mt-4">
+                <h5>No teams have registered yet.</h5>
+                <p>When participants join this hackathon, they will appear here.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
